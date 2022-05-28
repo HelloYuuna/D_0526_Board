@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.scit.dao.BoardMapper">
+    <insert id="writeBoard" parameterType="Board">
+        INSERT INTO BOARD (boardnum, writer, title, text)
+        VALUES (board_seq.nextval, #{writer}, #{title}, #{text})
+    </insert>
+
+    <select id="listBoard" resultType="Board">
+        SELECT BOARDNUM, writer, title, HITCOUNT, to_char(REGDATE,'YYYY-MM-DD') as REGDATE
+        FROM BOARD
+        ORDER BY REGDATE desc
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT count(*)
+        FROM BOARD
+    </select>
+    
+    <select id="readBoard" parameterType="int" resultType="Board">
+        SELECT BOARDNUM, writer, title, text, HITCOUNT, to_char(REGDATE,'YYYY-MM-DD') as REGDATE
+        FROM BOARD
+        WHERE BOARDNUM = #{boardnum}
+    </select>
+
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM BOARD
+        WHERE BOARDNUM = #{boardnum}
+    </delete>
+
+    <update id="incrementHitcount" parameterType="int">
+        UPDATE BOARD
+        SET HITCOUNT = HITCOUNT + 1
+        WHERE BOARDNUM = #{boardnum}
+    </update>
+</mapper>

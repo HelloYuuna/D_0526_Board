@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.scit.dao.ReplyMapper">
+    <select id="listReply" parameterType="int" resultType="Reply">
+        SELECT REPLYNUM, BOARDNUM, writer, text, to_char(REGDATE, 'YYYY-MM-DD') as REGDATE
+        FROM REPLY
+        WHERE BOARDNUM = #{boardnum}
+    </select>
+
+    <insert id="writeReply" parameterType="Reply">
+        INSERT INTO reply (replynum, boardnum, writer, text)
+        VALUES (REPLY_SEQ.nextval, #{boardnum}, #{writer}, #{text})
+    </insert>
+
+    <update id="updateReply" parameterType="Reply">
+        UPDATE reply
+        SET text = #{text}
+        WHERE REPLYNUM = #{replynum}
+    </update>
+</mapper>
