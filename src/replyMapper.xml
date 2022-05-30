@@ -20,4 +20,9 @@
         SET text = #{text}
         WHERE REPLYNUM = #{replynum}
     </update>
+
+    <delete id="deleteReply" parameterType="int">
+        DELETE FROM REPLY
+        WHERE REPLYNUM = #{replynum}
+    </delete>
 </mapper>

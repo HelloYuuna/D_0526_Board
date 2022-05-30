@@ -15,6 +15,20 @@ import java.util.List;
 public class ReplyDAO {
     private final SqlSessionFactory factory = MybatisConfig.getSqlSessionFactory();
 
+    public int deleteReply(int replynum) {
+        SqlSession session = factory.openSession();
+        ReplyMapper mapper = session.getMapper(ReplyMapper.class);
+        int result = mapper.deleteReply(replynum);
+
+        if(result == 1) {
+            session.commit();
+            return 1;
+        }
+
+        session.rollback();
+        return 0;
+    }
+
     public int updateReply(Reply reply) {
         SqlSession session = factory.openSession();
         ReplyMapper mapper = session.getMapper(ReplyMapper.class);

@@ -36,4 +36,11 @@
         SET HITCOUNT = HITCOUNT + 1
         WHERE BOARDNUM = #{boardnum}
     </update>
+
+    <update id="updateBoard" parameterType="Board">
+        UPDATE BOARD
+        SET TITLE = #{title},
+            TEXT = #{text}
+        WHERE BOARDNUM = #{boardnum}
+    </update>
 </mapper>

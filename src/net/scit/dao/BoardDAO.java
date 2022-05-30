@@ -80,4 +80,19 @@ public class BoardDAO {
         session.rollback();
         return 0;
     }
+
+    public int updateBoard(Board board) {
+        SqlSession session = factory.openSession();
+        BoardMapper mapper = session.getMapper(BoardMapper.class);
+
+        int result = mapper.updateBoard(board);
+
+        if(result == 1) {
+            session.commit();
+            return 1;
+        }
+
+        session.rollback();
+        return 0;
+    }
 }

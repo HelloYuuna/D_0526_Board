@@ -116,6 +116,7 @@ public class BoardUI {
         while (true) {
             out.print("게시글 번호: ");
             int boardnum = scanner.nextInt();
+            scanner.nextLine();
 
             /* serching boardnum */
             Board readBoard = boardDAO.readBoard(boardnum);
@@ -129,19 +130,17 @@ public class BoardUI {
             out.println("글번호  작성자 제목 조회수  등록일");
             out.println("----------------------------");
             out.println(readBoard);
-            out.println("내용: " +readBoard.getText());
+            out.println("내용: " + readBoard.getText());
             out.println("----------------------------");
             replyStart(boardnum);
 
             out.println();
-            scanner.nextLine();
             return;
         }
 
     }
 
-    private void replyStart(int boardnum) {
-        scanner.nextLine();
+    private void  replyStart(int boardnum) {
         out.println("\n\t [ 댓글 목록 ]");
         out.println("----------------------------");
 
@@ -160,7 +159,7 @@ public class BoardUI {
                 case "2":
                     updateReply(boardnum); break;
                 case "3":
-//                    deleteReply(boardnum); break;
+                    deleteReply(boardnum); break;
                 case "0":
                     out.println("상위메뉴로 이동합니다.");
                     start(); return;
@@ -171,11 +170,21 @@ public class BoardUI {
 
     }
 
+    private void deleteReply(int boardnum) {
+        out.print("삭제할 댓글번호: ");
+        int replynum = scanner.nextInt();
+        int result = replyDAO.deleteReply(replynum);
+
+        out.println(result + "건의 댓글이 삭제되었습니다.");
+        showByBoardnum(boardnum);
+    }
+
     private void updateReply(int boardnum) {
         out.print("수정할 댓글번호: ");
         Reply reply = new Reply();
         int replynum = scanner.nextInt();
         reply.setReplynum(replynum);
+        scanner.nextLine();
 
         out.print("수정할 내용(500자): ");
         String text = scanner.nextLine();
@@ -272,6 +281,47 @@ public class BoardUI {
     }
 
     public void update() {
+        out.println("\n\t [ 게시글 수정 ]");
+        out.println("----------------------------");
+
+        int result = boardDAO.getCount();
+        if(result == 0) {
+            out.println("등록된 게시글이 없습니다. 먼저 게시글을 등록해주세요!");
+            return;
+        }
+
+        while (true) {
+            out.print("수정하려는 게시글 번호: ");
+            int boardnum = scanner.nextInt();
+
+            /* serching boardnum */
+            Board readBoard = boardDAO.readBoard(boardnum);
+            if (readBoard == null) {
+                out.println("번호에 해당하는 게시글이 없습니다. 다시 입력해주세요.");
+                continue;
+            }
+
+            Board board = new Board();
+            board.setBoardnum(boardnum);
+            scanner.nextLine();
+
+            out.print("제목: ");
+            String title = scanner.nextLine();
+            board.setTitle(title);
+
+            out.print("내용 (1,000자): ");
+            String text = scanner.nextLine();
+            board.setText(text);
+
+            result = boardDAO.updateBoard(board);
+            if(result != 1) {
+                out.println("삭제에 실패하였습니다.");
+            }
+
+            out.println(result + "건 수정완료");
+            return;
+        }
+
     }
 
     public void search() {
