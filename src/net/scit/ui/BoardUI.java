@@ -5,7 +5,9 @@ import net.scit.dao.ReplyDAO;
 import net.scit.vo.Board;
 import net.scit.vo.Reply;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import static java.lang.System.out;
@@ -325,6 +327,44 @@ public class BoardUI {
     }
 
     public void search() {
+        out.println("\n\t [ 게시글 검색 ]");
+        out.println("----------------------------");
+        out.println("\t 1)제목 검색 2)작성자 검색 3)내용 검색 0)상위 메뉴");
+        out.print("\t선택> ");
+        choice = scanner.next();
+
+        String searchItem = "";
+        switch(choice) {
+            case "1":
+                searchItem = "title";
+                break;
+            case "2":
+                searchItem = "writer";
+                break;
+            case "3":
+                searchItem = "text";
+                break;
+            case "0":
+                out.println("상위메뉴로 돌아갑니다.");
+                return;
+            default:
+                out.println("잘못된 선택입니다. 상위메뉴로 돌아갑니다.");
+                return;
+        }
+
+        out.print("\t검색어: ");
+        String searchWord = scanner.next();
+
+        Map<String, Object> searchBoardbyMap = new HashMap<>();
+        searchBoardbyMap.put("searchItem", searchItem);
+        searchBoardbyMap.put("searchWord", searchWord);
+
+        List<Board> searchBoardList = boardDAO.searchBoard(searchBoardbyMap);
+        if(searchBoardList.isEmpty()) {
+            out.println("찾으시는 항목이 없습니다.");
+        }
+        searchBoardList.forEach(out::println);
+        scanner.nextLine();
     }
 
 }

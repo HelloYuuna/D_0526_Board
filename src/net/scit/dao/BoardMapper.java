@@ -3,6 +3,7 @@ package net.scit.dao;
 import net.scit.vo.Board;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * projectName     :D_0526_Board
@@ -24,8 +25,8 @@ public interface BoardMapper {
     public Board readBoard(int boardmum);
 
     /* 게시글 검색 */
-//    public Board searchBoard (Map<String, Object> board);
-    public Board searchBoard(int boardnum);
+    public List<Board> searchBoard(Map<String, Object> searchBoardbyMap);
+//    public Board searchBoard(int boardnum);
 
     /* 게시글 삭제 */
     public int deleteBoard(int boardnum);

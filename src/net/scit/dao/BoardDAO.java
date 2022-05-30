@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * projectName     :D_0526_Board
@@ -94,5 +95,15 @@ public class BoardDAO {
 
         session.rollback();
         return 0;
+    }
+
+    public List<Board> searchBoard(Map<String, Object> searchBoardbyMap) {
+        SqlSession session = factory.openSession();
+        BoardMapper mapper = session.getMapper(BoardMapper.class);
+
+        List<Board> list = mapper.searchBoard(searchBoardbyMap);
+
+        return list;
+
     }
 }

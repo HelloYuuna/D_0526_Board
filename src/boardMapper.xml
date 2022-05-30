@@ -43,4 +43,16 @@
             TEXT = #{text}
         WHERE BOARDNUM = #{boardnum}
     </update>
+
+    <select id="searchBoard" parameterType="map" resultType="Board">
+        SELECT *
+        FROM BOARD
+        WHERE
+            <choose>
+                <when test="searchItem == 'title'"> title</when>
+                <when test="searchItem == 'writer'">writer</when>
+                <when test="searchItem == 'text'">text</when>
+            </choose>
+        Like '%' || #{searchWord} || '%'
+    </select>
 </mapper>
